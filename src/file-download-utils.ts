@@ -8,7 +8,7 @@ export function WriteContentToFile(
   fileExtesion: FileExtensions,
 ) {
   let PATH_TO_WRITE =
-    RNFetchBlob.fs.dirs.DownloadDir + `/DownloadFeature/myFile${fileExtesion}`;
+    RNFetchBlob.fs.dirs.DownloadDir + `/DownloadFeature/myFileFromBase64${fileExtesion}`;
 
   RNFetchBlob.fs
     .writeFile(PATH_TO_WRITE, content, encoding)
@@ -56,4 +56,30 @@ export const downloadContent = (content: string, fileType: FileType) => {
       Alert.alert('Error', error as string);
     }
   }
+};
+
+export const downloadContentFromUrl = (url: string, fileType?: FileType) => {
+  const {config, fs} = RNFetchBlob;
+  let PATH_TO_DOWNLOAD = fs.dirs.DownloadDir;
+  let date = new Date();
+  let options = {
+    fileCache: true,
+    addAndroidDownloads: {
+      //Related to the Android only
+      useDownloadManager: true,
+      notification: true,
+      path:
+        PATH_TO_DOWNLOAD +
+        '/DownloadFeature/myFileFromUrl' +
+        Math.floor(date.getTime() + date.getSeconds() / 2),
+      description: 'File Download',
+    },
+  };
+  config(options)
+    .fetch('GET', url)
+    .then(res => {
+      //Showing alert after successful downloading
+      console.log('res -> ', JSON.stringify(res));
+      Alert.alert('File Downloaded Successfully.');
+    });
 };

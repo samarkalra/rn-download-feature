@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, StyleSheet, View} from 'react-native';
 import {FileType} from './enums';
-import {downloadContent} from './file-download-utils';
+import {downloadContent, downloadContentFromUrl} from './file-download-utils';
 import {files} from './fileBase64';
 
 const App = () => {
@@ -10,6 +10,12 @@ const App = () => {
   };
   const onDownloadPdfBase64Press = () => {
     downloadContent(files.pdfBase64, FileType.Pdf);
+  };
+  const onDownloadImageUrlPress = () => {
+    downloadContentFromUrl(files.imageURL);
+  };
+  const onDownloadPdfUrlPress = () => {
+    downloadContentFromUrl(files.pdfURL);
   };
 
   return (
@@ -26,6 +32,17 @@ const App = () => {
           title="download pdf from base64"
           onPress={onDownloadPdfBase64Press}
         />
+      </View>
+
+      <View style={styles.button}>
+        <Button
+          title="download image from Url"
+          onPress={onDownloadImageUrlPress}
+        />
+      </View>
+
+      <View style={styles.button}>
+        <Button title="download pdf from Url" onPress={onDownloadPdfUrlPress} />
       </View>
     </View>
   );
