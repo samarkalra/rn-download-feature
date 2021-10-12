@@ -8,7 +8,8 @@ export function WriteContentToFile(
   fileExtesion: FileExtensions,
 ) {
   let PATH_TO_WRITE =
-    RNFetchBlob.fs.dirs.DownloadDir + `/DownloadFeature/myFileFromBase64${fileExtesion}`;
+    RNFetchBlob.fs.dirs.DownloadDir +
+    `/DownloadFeature/myFileFromBase64${fileExtesion}`;
 
   RNFetchBlob.fs
     .writeFile(PATH_TO_WRITE, content, encoding)
@@ -23,7 +24,11 @@ export const downloadContent = (content: string, fileType: FileType) => {
   //If iOS the start downloading
   //If Android then ask for runtime permission
   if (Platform.OS === 'ios') {
-    // downloadHistory();
+    WriteContentToFile(
+      content,
+      EncodingNames.base64,
+      fileType === FileType.Image ? FileExtensions.jpg : FileExtensions.pdf,
+    );
   } else {
     try {
       PermissionsAndroid.request(
@@ -81,5 +86,8 @@ export const downloadContentFromUrl = (url: string, fileType?: FileType) => {
       //Showing alert after successful downloading
       console.log('res -> ', JSON.stringify(res));
       Alert.alert('File Downloaded Successfully.');
+    })
+    .catch(error => {
+      Alert.alert('Error', error);
     });
 };
